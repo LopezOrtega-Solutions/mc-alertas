@@ -2,6 +2,8 @@ package com.terrahome.msalertas.security;
 
 import com.terrahome.msalertas.model.dto.ApiErrorResponse;
 import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class ApiErrorHandler {
+
+    private static final Logger log = LoggerFactory.getLogger(ApiErrorHandler.class);
 
     @ExceptionHandler(NegocioException.class)
     public ResponseEntity<ApiErrorResponse> handleNegocio(NegocioException ex) {
@@ -49,6 +53,7 @@ public class ApiErrorHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiErrorResponse> handleGeneric(Exception ex) {
+        log.error("Error no controlado: {} {}", ex.getClass().getName(), ex.getMessage(), ex);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(new ApiErrorResponse("ERROR_INTERNO", "Ocurrió un error interno"));
     }

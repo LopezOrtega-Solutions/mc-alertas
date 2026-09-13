@@ -4,3 +4,5 @@ target/
 .DS_Store
 .idea/
 .vscode/
+# H2 en archivo del perfil dev (./data): BD local, no versionar.
+data/
